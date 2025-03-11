@@ -1,10 +1,10 @@
-# Innovative-Taylor-series
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-
+# === 1. 讀取與檢查資料 ===
+# 請確認活頁簿1.pdf 中的資料已轉成適合分析的表格格式（例如 CSV 或 Excel）
+# 這裡假設已轉換為 CSV 檔案，名稱為 "活頁簿1.csv"
 data = pd.read_csv("活頁簿1.csv")
 
 # 檢查資料結構與前 5 筆記錄
@@ -51,4 +51,24 @@ grouped_interest = data.groupby('Interest_Group')[likert_cols].mean()
 print("\n依 MathInterest 分組的 Likert 題目平均分數：")
 print(grouped_interest)
 
-return0;
+# === 6. 視覺化示範 ===
+# (a) 各 Likert 題目的直方圖
+for col in likert_cols:
+    plt.figure()
+    plt.hist(data[col].dropna(), bins=np.arange(1,7)-0.5, edgecolor='black')
+    plt.title(f"{col} 分數分布")
+    plt.xlabel("分數")
+    plt.ylabel("人數")
+    plt.xticks(range(1,6))
+    plt.show()
+
+# (b) Likert 題目相關矩陣
+corr_matrix = data[likert_cols].corr()
+plt.figure(figsize=(8,6))
+plt.imshow(corr_matrix, cmap='viridis', interpolation='none')
+plt.colorbar()
+plt.xticks(range(len(likert_cols)), likert_cols, rotation=90)
+plt.yticks(range(len(likert_cols)), likert_cols)
+plt.title("Likert 題目相關矩陣")
+plt.show()
+
